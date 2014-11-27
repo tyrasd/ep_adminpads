@@ -3,7 +3,7 @@ var eejs = require('ep_etherpad-lite/node/eejs')
   , api = require('ep_etherpad-lite/node/db/API')
   , log4js = require('log4js')
   , logger = log4js.getLogger("plugin:adminpads")
-  , queryLimit=12
+  , queryLimit=50
 ;
 RegExp.quote = require('regexp-quote')
 var isNumeric=function(arg){
@@ -98,6 +98,7 @@ exports.socketio = function (hook_name, args, cb) {
     });
 
     socket.on("search", function (query) {
+      query.limit = queryLimit;
       pads.search(query, function (progress) {
         io.emit("progress",{progress:1});
         socket.emit("search-result", progress);
