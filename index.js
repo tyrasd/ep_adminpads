@@ -54,10 +54,11 @@ var pads={
     
     if(!isNumeric(query.limit) || query.limit<0) query.limit=queryLimit;
     
-    var rs=result.slice(query.offset, query.offset + query.limit);
-    
+    //var rs=result.slice(query.offset, query.offset + query.limit);
+    var rs=result;
+
     pads.pads=rs;
-    
+
     var entryset;
     data.results=[];
     
@@ -70,6 +71,10 @@ var pads={
         });
         data.results.push(entryset);
     });
+    data.results.sort(function(a,b) {
+        return b.lastEdited - a.lastEdited;
+    });
+    data.results = data.results.slice(query.offset, query.offset + query.limit);
     callback(data);
   }
 };
